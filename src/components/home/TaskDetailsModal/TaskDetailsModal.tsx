@@ -1,11 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import AddCommentForm from '../AddCommentForm';
+import AssignActions from '../AsignActions.tsx';
+import { AssignOption } from '../AsignActions.tsx/AssignActions';
 import TaskComments from '../TaskComments';
-
-import UserAvatar from '@/components/common/UserAvatar';
 
 type TaskDetailsModaProps = {
   visible: boolean;
@@ -16,6 +16,15 @@ const TaskDetailsModal = ({
   visible,
   onClose,
 }: TaskDetailsModaProps): React.ReactElement => {
+  const [assigned, setAssigned] = useState({
+    name: 'Unassigned',
+    value: null,
+  } as AssignOption);
+  const [labelled, setLabelled] = useState({
+    name: 'Tasks',
+    value: 'task',
+  } as AssignOption);
+
   return (
     <Transition.Root show={visible} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -43,7 +52,7 @@ const TaskDetailsModal = ({
               leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
             >
               <Dialog.Panel className="flex w-full transform text-left text-base transition md:my-8 md:max-w-xl md:px-4">
-                <div className="relative flex w-full items-center overflow-hidden bg-the-gray px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                <div className="relative flex w-full items-center bg-the-gray px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                   <button
                     type="button"
                     className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
@@ -52,17 +61,19 @@ const TaskDetailsModal = ({
                     <span className="sr-only">Close</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
-                  <section
-                    aria-labelledby="information-heading"
-                    className="mt-3"
-                  >
+                  <section className="mt-3">
                     <h2 className="text-lg font-bold text-gray-700 sm:pr-12">
                       Add pagination to customers pages
                     </h2>
-                    <p className="mt-4 text-sm font-bold text-gray-500">
-                      <UserAvatar name="Kelvin Lora" sizeClassName="h-7 w-7" />{' '}
-                      Kelvin Lora
-                    </p>
+
+                    <AssignActions
+                      assigned={assigned}
+                      labelled={labelled}
+                      setAssigned={setAssigned}
+                      setLabelled={setLabelled}
+                      align="right"
+                    />
+
                     <div className="mt-6">
                       <h4 className="font-bold">Description</h4>
 
