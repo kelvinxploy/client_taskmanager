@@ -48,6 +48,9 @@ module.exports = {
       maxWidth: {
         '2xl': '40rem',
       },
+      flex: {
+        0: '0 0 auto',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/line-clamp')],

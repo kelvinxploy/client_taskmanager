@@ -5,12 +5,10 @@ import TasksContainer from '@/components/home/TasksContainer';
 
 export default function Home(): ReactElement {
   return (
-    <main className="">
+    <main>
       <Navbar />
 
-      <div className="p-4">
-        <TasksContainer />
-      </div>
+      <TasksContainer />
     </main>
   );
 }
