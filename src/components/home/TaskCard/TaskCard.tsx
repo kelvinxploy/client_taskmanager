@@ -1,18 +1,22 @@
 import React from 'react';
 
+import UserAvatar from '@/components/common/UserAvatar';
+
 type TaskCardProps = {
   title: string;
+  onClick: () => void;
 };
 
-const TaskCard = ({ title }: TaskCardProps): React.ReactElement => {
+const TaskCard = ({ title, onClick }: TaskCardProps): React.ReactElement => {
   return (
-    <li className="p-2 bg-white shadow-md rounded-md cursor-pointer hover:bg-gray-100">
+    <li
+      onClick={onClick}
+      className="p-2 bg-white shadow-md rounded-md cursor-pointer hover:bg-gray-100"
+    >
       <h3 className="text-sm text-gray-600">{title}</h3>
 
       <div className="mt-3 text-end">
-        <span className="text-xs p-1 text-white rounded-full bg-sky-600">
-          KL
-        </span>
+        <UserAvatar sizeClassName="h-6 w-6" name="Kelvin Lora" />
       </div>
     </li>
   );
