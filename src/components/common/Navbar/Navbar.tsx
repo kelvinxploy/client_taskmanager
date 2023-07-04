@@ -4,7 +4,11 @@ import React from 'react';
 
 import Button from '@/components/form/Button';
 
-const Navbar = (): React.ReactElement => {
+type NavbarProps = {
+  onCreateTaskClick: () => void;
+};
+
+const Navbar = ({ onCreateTaskClick }: NavbarProps): React.ReactElement => {
   return (
     <nav className="bg-white shadow-sm mx-auto max-w-7xl p-4 px-4 sm:px-6 lg:px-8">
       <div className="relative flex items-center justify-between gap-8">
@@ -41,7 +45,7 @@ const Navbar = (): React.ReactElement => {
         </div>
 
         <div className=" lg:flex lg:items-center lg:justify-end">
-          <Button className="flex gap-1">
+          <Button onClick={onCreateTaskClick} className="flex gap-1">
             <PlusCircleIcon className="h-6 w-6" />
             Add task
           </Button>
