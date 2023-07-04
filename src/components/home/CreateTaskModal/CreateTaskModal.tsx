@@ -1,14 +1,20 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 
 import CreateTaskForm from '../CreateTaskForm';
 
-const CreateTaskModal = (): React.ReactElement => {
-  const [open, setOpen] = useState(true);
+type CreateTaskModalProps = {
+  visible: boolean;
+  onClose: () => void;
+};
 
+const CreateTaskModal = ({
+  visible,
+  onClose,
+}: CreateTaskModalProps): React.ReactElement => {
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+    <Transition.Root show={visible} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
