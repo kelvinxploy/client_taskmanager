@@ -1,6 +1,10 @@
 import { ReactElement } from 'react';
 
+import TaskDetailsModal from '../TaskDetailsModal';
 import TaskSection from '../TaskSection';
+
+import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
+import { setIsTaskDetailsModalVisible } from '@/src/redux/slices/taskSlice';
 
 const clients = [
   { id: 1, name: 'Tasks' },
@@ -25,8 +29,21 @@ const tasks = [
 ];
 
 const TasksContainer = (): ReactElement => {
+  const { isTaskDetailsModalVisible } = useAppSelector(
+    (selector) => selector.task
+  );
+  const dispatch = useAppDispatch();
+
+  const handleOnCloseDetailsModal = (): void => {
+    dispatch(setIsTaskDetailsModalVisible(false));
+  };
+
   return (
     <article className="p-4 flex w-screen gap-4 overflow-x-auto">
+      <TaskDetailsModal
+        onClose={handleOnCloseDetailsModal}
+        visible={isTaskDetailsModalVisible}
+      />
       {clients.map((client) => (
         <TaskSection key={client.id} name={client.name} tasks={tasks} />
       ))}

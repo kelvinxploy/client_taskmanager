@@ -2,8 +2,9 @@ import { Listbox, Transition } from '@headlessui/react';
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import { FormEvent, Fragment, useState } from 'react';
 
+import UserAvatar from '@/components/common/UserAvatar';
 import Button from '@/components/form/Button';
-import { classNames, getWordsFirstLetterUppercase } from '@/src/utils';
+import { classNames } from '@/src/utils';
 
 const assignees = [
   { name: 'Unassigned', value: null },
@@ -85,9 +86,7 @@ const CreateTaskForm = (): React.ReactElement => {
                         aria-hidden="true"
                       />
                     ) : (
-                      <span className="h-5 w-5 text-xs flex items-center justify-center text-white rounded-full bg-sky-600">
-                        {getWordsFirstLetterUppercase(assigned.name)}
-                      </span>
+                      <UserAvatar name={assigned.name} />
                     )}
 
                     <span
@@ -120,9 +119,7 @@ const CreateTaskForm = (): React.ReactElement => {
                           value={assignee}
                         >
                           <div className="flex items-center">
-                            <span className="h-5 w-5 text-xs flex items-center justify-center text-white rounded-full bg-sky-600">
-                              {getWordsFirstLetterUppercase(assignee.name)}
-                            </span>
+                            <UserAvatar name={assignee.name} />
 
                             <span className="ml-3 block truncate font-medium">
                               {assignee.name}
