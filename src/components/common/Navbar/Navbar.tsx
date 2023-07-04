@@ -2,6 +2,8 @@ import { MagnifyingGlassIcon, PlusCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 
+import Button from '@/components/form/Button';
+
 const Navbar = (): React.ReactElement => {
   return (
     <nav className="bg-white shadow-sm mx-auto max-w-7xl p-4 px-4 sm:px-6 lg:px-8">
@@ -39,13 +41,10 @@ const Navbar = (): React.ReactElement => {
         </div>
 
         <div className=" lg:flex lg:items-center lg:justify-end">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
-          >
+          <Button className="flex gap-1">
             <PlusCircleIcon className="h-6 w-6" />
             Add task
-          </a>
+          </Button>
         </div>
       </div>
     </nav>
