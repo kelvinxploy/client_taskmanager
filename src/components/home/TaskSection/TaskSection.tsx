@@ -19,7 +19,7 @@ const TaskSection = ({ name, tasks }: TaskSectionProps): React.ReactElement => {
   };
 
   return (
-    <section className="w-[80%] sm:w-72 p-3 flex-0 rounded-xl bg-the-gray border border-gray-200 ">
+    <section className="w-[80%] h-fit sm:w-72 p-3 flex-0 rounded-xl bg-the-gray border border-gray-200">
       <div className="text-sm font-bold leading-6 text-gray-900">{name}</div>
 
       <ul className="w-full mt-3 space-y-4 max-h-[70vh] overflow-y-auto">
