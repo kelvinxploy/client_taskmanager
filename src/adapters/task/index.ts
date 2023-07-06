@@ -22,3 +22,9 @@ export const createTask = async (
 ): Promise<AxiosResponse<Task>> => {
   return postRequest<Task>(`${WEB_API_URL}/task/`, newTask);
 };
+
+export const updateTask = async (
+  data: Partial<CreateTaskProps>
+): Promise<AxiosResponse<Task>> => {
+  return postRequest<Task>(`${WEB_API_URL}/task/`, data);
+};

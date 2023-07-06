@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import AssignActions from '../AsignActions';
-import { AssignOption } from '../AsignActions/AssignActions';
 
 import { Task } from '@/src/types/task';
 
@@ -12,19 +11,13 @@ type TaskDetailsProps = {
 const fields = [
   { id: 1, title: 'Job number', field: 'task_number' },
   { id: 2, title: 'Job type', field: 'task_type' },
-  { id: 3, title: 'Contact name', field: 'contact_type' },
-  { id: 4, title: 'Contact number', field: 'contact_name' },
+  { id: 3, title: 'Contact name', field: 'contact_name' },
+  { id: 4, title: 'Contact number', field: 'contact_number' },
 ];
 
 const TaskDetails = ({ task }: TaskDetailsProps): React.ReactElement => {
-  const [assigned, setAssigned] = useState({
-    name: 'Unassigned',
-    value: null,
-  } as AssignOption);
-  const [labelled, setLabelled] = useState({
-    name: 'Tasks',
-    value: 'task',
-  } as AssignOption);
+  const [assigned, setAssigned] = useState('');
+  const [labelled, setLabelled] = useState('');
 
   return (
     <section className="mt-3 w-full">

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import AssignActions from '../AsignActions';
-import { AssignOption } from '../AsignActions/AssignActions';
 
 import Spinner from '@/components/common/Spinner';
 import Button from '@/components/form/Button';
@@ -22,17 +21,11 @@ const CreateTaskForm = ({
 }: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
 
-  const [assigned, setAssigned] = useState({
-    name: 'Unassigned',
-    value: null,
-  } as AssignOption);
-  const [labelled, setLabelled] = useState({
-    name: 'Tasks',
-    value: 'task',
-  } as AssignOption);
+  const [assigned, setAssigned] = useState('');
+  const [labelled, setLabelled] = useState('');
 
   const submitHandler = (props: Task): void => {
-    onSubmit({ ...props, label: labelled.value || 'task' });
+    onSubmit({ ...props, label: labelled || 'task' });
   };
 
   return (
@@ -138,8 +131,9 @@ const CreateTaskForm = ({
               inputSize="sm"
               register={register('task_type', { required: true })}
               placeholder="select job type"
+              defaultValue=""
             >
-              <option key={0} selected value="">
+              <option key={0} value="">
                 Select job type
               </option>
               <option value="roll up awning">roll up awning</option>

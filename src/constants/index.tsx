@@ -7,3 +7,8 @@ export const taskLabels = [
   { id: 'rfr', name: 'Ready for review' },
   { id: 'done', name: 'Done' },
 ];
+
+export const labelsNameByValue = taskLabels.reduce((acc, curr) => {
+  acc[curr.id] = curr.name;
+  return acc;
+}, {} as Record<string, string>);
