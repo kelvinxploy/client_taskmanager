@@ -4,18 +4,19 @@ import React from 'react';
 import TaskCard from '../TaskCard';
 
 import { useAppDispatch } from '@/src/redux/hooks';
-import { setIsTaskDetailsModalVisible } from '@/src/redux/slices/taskSlice';
+import { setSelectedTask } from '@/src/redux/slices/taskSlice';
+import { Task } from '@/src/types/task';
 
 type TaskSectionProps = {
   name: string;
-  tasks: { id: number; title: string }[];
+  tasks: Task[];
 };
 
 const TaskSection = ({ name, tasks }: TaskSectionProps): React.ReactElement => {
   const dispatch = useAppDispatch();
 
-  const handleOpenDetailsModal = (): void => {
-    dispatch(setIsTaskDetailsModalVisible(true));
+  const handleOpenDetailsModal = (task: Task): void => {
+    dispatch(setSelectedTask(task));
   };
 
   return (
@@ -23,8 +24,12 @@ const TaskSection = ({ name, tasks }: TaskSectionProps): React.ReactElement => {
       <div className="text-sm font-bold leading-6 text-gray-900">{name}</div>
 
       <ul className="w-full mt-3 space-y-4 max-h-[70vh] overflow-y-auto">
-        {tasks.map(({ id, title }) => (
-          <TaskCard key={id} onClick={handleOpenDetailsModal} title={title} />
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            onClick={(): void => handleOpenDetailsModal(task)}
+            title={task.title}
+          />
         ))}
       </ul>
 
