@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import AssignActions from '../AsignActions';
 
@@ -6,6 +6,7 @@ import { Task } from '@/src/types/task';
 
 type TaskDetailsProps = {
   task: Task;
+  onLabelChange: (newLabel: string) => void;
 };
 
 const fields = [
@@ -15,10 +16,10 @@ const fields = [
   { id: 4, title: 'Contact number', field: 'contact_number' },
 ];
 
-const TaskDetails = ({ task }: TaskDetailsProps): React.ReactElement => {
-  const [assigned, setAssigned] = useState('');
-  const [labelled, setLabelled] = useState('');
-
+const TaskDetails = ({
+  task,
+  onLabelChange,
+}: TaskDetailsProps): React.ReactElement => {
   return (
     <section className="mt-3 w-full">
       <div className="w-full px-4 sm:px-0">
@@ -26,10 +27,8 @@ const TaskDetails = ({ task }: TaskDetailsProps): React.ReactElement => {
           {task.title}
         </h2>
         <AssignActions
-          assigned={assigned}
-          labelled={labelled}
-          setAssigned={setAssigned}
-          setLabelled={setLabelled}
+          defaultLabel={task.label}
+          onLabelChange={onLabelChange}
           align="right"
         />
       </div>

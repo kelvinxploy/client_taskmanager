@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { WEB_API_URL, getRequest, postRequest } from '../helpers';
+import { WEB_API_URL, getRequest, postRequest, putRequest } from '../helpers';
 
 import { Task } from '@/src/types/task';
 
@@ -22,9 +22,14 @@ export const createTask = async (
 ): Promise<AxiosResponse<Task>> => {
   return postRequest<Task>(`${WEB_API_URL}/task/`, newTask);
 };
+type UpdateTaskProps = {
+  taskId: number;
+  data: Partial<CreateTaskProps>;
+};
 
-export const updateTask = async (
-  data: Partial<CreateTaskProps>
-): Promise<AxiosResponse<Task>> => {
-  return postRequest<Task>(`${WEB_API_URL}/task/`, data);
+export const updateTask = async ({
+  taskId,
+  data,
+}: UpdateTaskProps): Promise<AxiosResponse<Task>> => {
+  return putRequest<Task>(`${WEB_API_URL}/task/${taskId}/`, data);
 };

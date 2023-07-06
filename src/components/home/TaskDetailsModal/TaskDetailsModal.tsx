@@ -1,9 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { Fragment } from 'react';
 
 import TaskDetails from '../TaskDetails.tsx';
 
+import { updateTask } from '@/src/adapters/task';
 import { Task } from '@/src/types/task.js';
 
 type TaskDetailsModaProps = {
@@ -17,6 +19,17 @@ const TaskDetailsModal = ({
   task,
   onClose,
 }: TaskDetailsModaProps): React.ReactElement => {
+  const queryCliennt = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: updateTask,
+    onSuccess: () => {
+      queryCliennt.prefetchQuery({ queryKey: ['tasks'] });
+    },
+  });
+
+  const handleOnLabelChange = (label: string): void => {
+    mutate({ taskId: task.id, data: { label } });
+  };
   return (
     <Transition.Root show={visible} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -54,7 +67,10 @@ const TaskDetailsModal = ({
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
-                  <TaskDetails task={task} />
+                  <TaskDetails
+                    task={task}
+                    onLabelChange={handleOnLabelChange}
+                  />
                 </div>
               </Dialog.Panel>
             </Transition.Child>
