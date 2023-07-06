@@ -20,8 +20,6 @@ const CreateTaskForm = ({
   loading,
 }: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
-
-  const [assigned, setAssigned] = useState('');
   const [labelled, setLabelled] = useState('');
 
   const submitHandler = (props: Task): void => {
@@ -66,13 +64,7 @@ const CreateTaskForm = ({
         </div>
 
         <div className="absolute inset-x-px bottom-0">
-          <AssignActions
-            assigned={assigned}
-            labelled={labelled}
-            setAssigned={setAssigned}
-            setLabelled={setLabelled}
-            align="right"
-          />
+          <AssignActions onLabelChange={setLabelled} align="right" />
         </div>
       </div>
 

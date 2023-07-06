@@ -1,6 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { TagIcon, UserCircleIcon } from '@heroicons/react/20/solid';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import UserAvatar from '@/components/common/UserAvatar';
 import { labelsNameByValue, taskLabels } from '@/src/constants';
@@ -21,18 +21,20 @@ const assigneesByValue = {
 
 type AssignActionsProps = {
   align?: 'right' | 'left';
-  setAssigned: (option: string) => void;
-  setLabelled: (option: string) => void;
-  labelled: string;
-  assigned: string;
+  onAssignedChange?: (option: string) => void;
+  onLabelChange: (option: string) => void;
+  defaultLabel?: string;
+  defaultAssigned?: string;
 };
 const AssignActions = ({
   align = 'left',
-  assigned,
-  labelled,
-  setAssigned,
-  setLabelled,
+  defaultAssigned = '',
+  defaultLabel = '',
+  onLabelChange,
+  onAssignedChange,
 }: AssignActionsProps): React.ReactElement => {
+  const [assigned, setAssigned] = useState(defaultAssigned);
+  const [labelled, setLabelled] = useState(defaultLabel);
   const justifyClassName =
     align === 'left' ? 'justify-start' : 'justify-end px-2';
 
@@ -41,7 +43,10 @@ const AssignActions = ({
       <Listbox
         as="div"
         value={labelled}
-        onChange={setLabelled}
+        onChange={(label): void => {
+          setLabelled(label);
+          onLabelChange(label);
+        }}
         className="flex-shrink-0"
       >
         {({ open }): React.ReactElement => (
@@ -93,7 +98,10 @@ const AssignActions = ({
       <Listbox
         as="div"
         value={assigned}
-        onChange={setAssigned}
+        onChange={(assignee): void => {
+          setAssigned(assignee);
+          onAssignedChange && onAssignedChange(assignee);
+        }}
         className="flex-shrink-0"
       >
         {({ open }): React.ReactElement => (
