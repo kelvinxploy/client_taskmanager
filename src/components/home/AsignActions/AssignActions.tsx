@@ -3,15 +3,8 @@ import { TagIcon, UserCircleIcon } from '@heroicons/react/20/solid';
 import React, { Fragment } from 'react';
 
 import UserAvatar from '@/components/common/UserAvatar';
+import { labelsNameByValue, taskLabels } from '@/src/constants';
 import { classNames } from '@/src/utils';
-
-export const labels = [
-  { name: 'Tasks', value: 'task' },
-  { name: 'To-Do', value: 'to-do' },
-  { name: 'In process', value: 'in-process' },
-  { name: 'Blocked', value: 'blocked' },
-  // More items...
-];
 
 export const assignees = [
   { name: 'Unassigned', value: null },
@@ -21,14 +14,17 @@ export const assignees = [
   },
 ];
 
-export type AssignOption = { name: string; value: string | null };
+const assigneesByValue = {
+  '': '',
+  kl: 'Kelvin Lora',
+} as Record<string, string>;
 
 type AssignActionsProps = {
   align?: 'right' | 'left';
-  setAssigned: (option: AssignOption) => void;
-  setLabelled: (option: AssignOption) => void;
-  labelled: AssignOption;
-  assigned: AssignOption;
+  setAssigned: (option: string) => void;
+  setLabelled: (option: string) => void;
+  labelled: string;
+  assigned: string;
 };
 const AssignActions = ({
   align = 'left',
@@ -58,7 +54,7 @@ const AssignActions = ({
                   aria-hidden="true"
                 />
                 <span className="text-gray-900 block truncate sm:ml-2">
-                  {labelled.value === null ? 'Label' : labelled.name}
+                  {!labelled ? 'Label' : labelsNameByValue[labelled]}
                 </span>
               </Listbox.Button>
 
@@ -70,16 +66,16 @@ const AssignActions = ({
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute right-0 z-10 mt-1 max-h-56 w-52 overflow-auto rounded-lg bg-white py-3 text-base shadow ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {labels.map((label) => (
+                  {taskLabels.map((label) => (
                     <Listbox.Option
-                      key={label.value}
+                      key={label.id}
                       className={({ active }): string =>
                         classNames(
                           active ? 'bg-gray-100' : 'bg-white',
                           'relative cursor-default select-none px-3 py-2'
                         )
                       }
-                      value={label}
+                      value={label.id}
                     >
                       <div className="flex items-center">
                         <span className="block truncate font-medium">
@@ -105,22 +101,22 @@ const AssignActions = ({
             <Listbox.Label className="sr-only">Assign</Listbox.Label>
             <div className="relative">
               <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                {assigned.value === null ? (
+                {!assigned ? (
                   <UserCircleIcon
                     className="h-5 w-5 flex-shrink-0 text-gray-300 sm:-ml-1"
                     aria-hidden="true"
                   />
                 ) : (
-                  <UserAvatar name={assigned.name} />
+                  <UserAvatar name={assigned} />
                 )}
 
                 <span
                   className={classNames(
-                    assigned.value === null ? '' : 'text-gray-900',
+                    !assigned ? '' : 'text-gray-900',
                     'block truncate sm:ml-2'
                   )}
                 >
-                  {assigned.value === null ? 'Assign' : assigned.name}
+                  {!assigned ? 'Assign' : assigneesByValue[assigned]}
                 </span>
               </Listbox.Button>
 
@@ -141,7 +137,7 @@ const AssignActions = ({
                           'relative cursor-pointer select-none px-3 py-2'
                         )
                       }
-                      value={assignee}
+                      value={assignee.value}
                     >
                       <div className="flex items-center">
                         <UserAvatar name={assignee.name} />
