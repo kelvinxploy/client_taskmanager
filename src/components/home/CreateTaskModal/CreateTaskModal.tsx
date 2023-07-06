@@ -1,7 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { Fragment } from 'react';
 
 import CreateTaskForm from '../CreateTaskForm';
+
+import { createTask } from '@/src/adapters/task';
+import { useAppDispatch } from '@/src/redux/hooks';
+import { setIsCreateTaskModalVisible } from '@/src/redux/slices/taskSlice';
 
 type CreateTaskModalProps = {
   visible: boolean;
@@ -12,6 +17,16 @@ const CreateTaskModal = ({
   visible,
   onClose,
 }: CreateTaskModalProps): React.ReactElement => {
+  const queryCliennt = useQueryClient();
+  const dispatch = useAppDispatch();
+  const { status, mutate } = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      queryCliennt.prefetchQuery({ queryKey: ['tasks'] });
+      dispatch(setIsCreateTaskModalVisible(false));
+    },
+  });
+
   return (
     <Transition.Root show={visible} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -39,7 +54,10 @@ const CreateTaskModal = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all w-full sm:max-w-lg">
-                <CreateTaskForm />
+                <CreateTaskForm
+                  onSubmit={mutate}
+                  loading={status === 'loading'}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>

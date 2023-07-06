@@ -7,8 +7,9 @@ import { classNames } from '@/src/utils';
 
 export const labels = [
   { name: 'Tasks', value: 'task' },
-  { name: 'To-Do', value: 'todo' },
-  { name: 'In process', value: 'in-proess' },
+  { name: 'To-Do', value: 'to-do' },
+  { name: 'In process', value: 'in-process' },
+  { name: 'Blocked', value: 'blocked' },
   // More items...
 ];
 
