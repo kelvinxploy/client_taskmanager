@@ -56,7 +56,7 @@ const AssignActions = ({
                   className="text-gray-500 h-5 w-5 flex-shrink-0 sm:-ml-1"
                   aria-hidden="true"
                 />
-                <span className="text-gray-900 hidden truncate sm:ml-2 sm:block">
+                <span className="text-gray-900 block truncate sm:ml-2">
                   {labelled.value === null ? 'Label' : labelled.name}
                 </span>
               </Listbox.Button>
@@ -116,7 +116,7 @@ const AssignActions = ({
                 <span
                   className={classNames(
                     assigned.value === null ? '' : 'text-gray-900',
-                    'hidden truncate sm:ml-2 sm:block'
+                    'block truncate sm:ml-2'
                   )}
                 >
                   {assigned.value === null ? 'Assign' : assigned.name}

@@ -1,7 +1,11 @@
 export type Task = {
   id: number;
   title: string;
-  description: string;
+  note: string;
   label: string;
+  task_number: number;
+  contact_number: string;
+  contact_name: string;
+  task_type: string;
   created: string;
 };

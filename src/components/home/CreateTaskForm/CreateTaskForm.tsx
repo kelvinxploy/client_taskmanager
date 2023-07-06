@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 
-import AssignActions from '../AsignActions.tsx';
-import { AssignOption } from '../AsignActions.tsx/AssignActions.jsx';
+import AssignActions from '../AsignActions';
+import { AssignOption } from '../AsignActions/AssignActions';
 
 import Button from '@/components/form/Button';
 

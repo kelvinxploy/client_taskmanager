@@ -5,7 +5,7 @@ import TaskSection from '../TaskSection';
 
 import { taskLabels } from '@/src/constants';
 import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
-import { setIsTaskDetailsModalVisible } from '@/src/redux/slices/taskSlice';
+import { setSelectedTask } from '@/src/redux/slices/taskSlice';
 import { Task } from '@/src/types/task';
 import { formatTasksByLabel } from '@/src/utils';
 
@@ -14,13 +14,12 @@ type TasksContainerProps = {
 };
 
 const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
-  const { isTaskDetailsModalVisible } = useAppSelector(
-    (selector) => selector.task
-  );
+  const { selectedTask } = useAppSelector((selector) => selector.task);
   const dispatch = useAppDispatch();
+  const isModalVisible = !!selectedTask?.id;
 
   const handleOnCloseDetailsModal = (): void => {
-    dispatch(setIsTaskDetailsModalVisible(false));
+    dispatch(setSelectedTask({} as Task));
   };
 
   const tasksByLabelObject = formatTasksByLabel(tasks);
@@ -29,7 +28,8 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
     <article className="p-4 flex w-screen gap-4 overflow-x-auto">
       <TaskDetailsModal
         onClose={handleOnCloseDetailsModal}
-        visible={isTaskDetailsModalVisible}
+        visible={isModalVisible}
+        task={selectedTask}
       />
       {taskLabels.map((label) => (
         <TaskSection
