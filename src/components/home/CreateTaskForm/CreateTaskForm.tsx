@@ -4,12 +4,22 @@ import { useForm } from 'react-hook-form';
 import AssignActions from '../AsignActions';
 import { AssignOption } from '../AsignActions/AssignActions';
 
+import Spinner from '@/components/common/Spinner';
 import Button from '@/components/form/Button';
 import InputText from '@/components/form/InputText';
 import Select from '@/components/form/Select';
+import { CreateTaskProps } from '@/src/adapters/task';
 import { Task } from '@/src/types/task';
 
-const CreateTaskForm = (): React.ReactElement => {
+type CreateTaskFormProps = {
+  onSubmit: (props: CreateTaskProps) => void;
+  loading: boolean;
+};
+
+const CreateTaskForm = ({
+  onSubmit,
+  loading,
+}: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
 
   const [assigned, setAssigned] = useState({
@@ -22,12 +32,14 @@ const CreateTaskForm = (): React.ReactElement => {
   } as AssignOption);
 
   const submitHandler = (props: Task): void => {
-    // eslint-disable-next-line no-console
-    console.log({ props, assigned, labelled });
+    onSubmit({ ...props, label: labelled.value || 'task' });
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className=" p-8 ">
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className={`p-8 ${loading && 'pointer-events-none opacity-50'}`}
+    >
       <div className="relative overflow-hiddens rounded-lg border border-gray-300 shadow-sm focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500">
         <label htmlFor="title" className="sr-only">
           Title
@@ -138,7 +150,9 @@ const CreateTaskForm = (): React.ReactElement => {
       </div>
 
       <div className="mt-4 text-end">
-        <Button type="submit">Create</Button>
+        <Button type="submit">
+          {loading && <Spinner textColor="text-green-100" loading />} Create
+        </Button>
       </div>
     </form>
   );
