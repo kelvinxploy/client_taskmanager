@@ -24,7 +24,7 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
   const { selectedTask } = useAppSelector((selector) => selector.task);
   const dispatch = useAppDispatch();
   const queryCliennt = useQueryClient();
-  const { mutate } = useMutation({
+  const { status: updateTaskStatus, mutate } = useMutation({
     mutationFn: updateTask,
     onSuccess: () => {
       queryCliennt.prefetchQuery({ queryKey: ['tasks'] }); // TODO: INVESTIGATE ANOTHER METHOD
@@ -56,7 +56,9 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
       <Modal
         onClose={handleOnCloseDetailsModal}
         visible={isModalVisible}
-        className="flex w-full transform text-left text-base transition md:my-8 md:max-w-xl md:px-4"
+        className={`flex w-full transform text-left text-base transition md:my-8 md:max-w-xl md:px-4 ${
+          updateTaskStatus === 'loading' && 'pointer-events-none opacity-90'
+        }`}
         content={
           <div className="relative flex w-full items-start bg-the-gray px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
             <button
