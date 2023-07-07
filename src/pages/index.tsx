@@ -12,7 +12,7 @@ import CreateTaskForm from '@/components/home/CreateTaskForm';
 import TasksContainer from '@/components/home/TasksContainer';
 
 export default function Home(): ReactElement {
-  const { isModalVisible, defaultLabel } = useAppSelector(
+  const { isModalVisible, defaultLabel, defaultAssignee } = useAppSelector(
     (selector) => selector.task.createTaskModalState
   );
   const dispatch = useAppDispatch();
@@ -26,7 +26,6 @@ export default function Home(): ReactElement {
   const handleCreateTaskModalVisibility = (): void => {
     dispatch(
       setCreateTaskModalState({
-        defaultLabel: '',
         isModalVisible: !isModalVisible,
       })
     );
@@ -53,7 +52,8 @@ export default function Home(): ReactElement {
           <CreateTaskForm
             onSubmit={mutate}
             loading={createTaskStatus === 'loading'}
-            defaultLabel={defaultLabel}
+            defaultLabel={defaultLabel as string}
+            defaultAssignee={defaultAssignee as string}
           />
         }
       />

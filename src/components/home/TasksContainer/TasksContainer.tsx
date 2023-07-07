@@ -37,6 +37,10 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
     mutate({ taskId: selectedTask.id, data: { label } });
   };
 
+  const onAssignedChange = (assignee: string): void => {
+    mutate({ taskId: selectedTask.id, data: { assignee } });
+  };
+
   const handleOnCloseDetailsModal = (): void => {
     dispatch(setSelectedTask({} as Task));
   };
@@ -73,6 +77,7 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
             <TaskDetails
               task={selectedTask}
               onLabelChange={handleOnLabelChange}
+              onAssignedChange={onAssignedChange}
             />
           </div>
         }

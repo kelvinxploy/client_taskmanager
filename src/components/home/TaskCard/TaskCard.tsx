@@ -4,10 +4,15 @@ import UserAvatar from '@/components/common/UserAvatar';
 
 type TaskCardProps = {
   title: string;
+  assigneeName: string;
   onClick: () => void;
 };
 
-const TaskCard = ({ title, onClick }: TaskCardProps): React.ReactElement => {
+const TaskCard = ({
+  title,
+  assigneeName,
+  onClick,
+}: TaskCardProps): React.ReactElement => {
   return (
     <li
       onClick={onClick}
@@ -16,7 +21,7 @@ const TaskCard = ({ title, onClick }: TaskCardProps): React.ReactElement => {
       <h3 className="text-sm text-gray-600">{title}</h3>
 
       <div className="mt-3 text-end">
-        <UserAvatar sizeClassName="h-6 w-6" name="Kelvin Lora" />
+        <UserAvatar sizeClassName="h-6 w-6" name={assigneeName} />
       </div>
     </li>
   );

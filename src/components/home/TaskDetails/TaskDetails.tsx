@@ -7,6 +7,7 @@ import { Task } from '@/src/types/task';
 type TaskDetailsProps = {
   task: Task;
   onLabelChange: (newLabel: string) => void;
+  onAssignedChange: (assignee: string) => void;
 };
 
 const fields = [
@@ -19,6 +20,7 @@ const fields = [
 const TaskDetails = ({
   task,
   onLabelChange,
+  onAssignedChange,
 }: TaskDetailsProps): React.ReactElement => {
   return (
     <section className="mt-3 w-full">
@@ -29,6 +31,8 @@ const TaskDetails = ({
         <AssignActions
           defaultLabel={task.label}
           onLabelChange={onLabelChange}
+          defaultAssigned={task.assignee}
+          onAssignedChange={onAssignedChange}
           align="right"
         />
       </div>
