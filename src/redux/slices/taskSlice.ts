@@ -3,17 +3,21 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { Task } from '@/src/types/task';
 
-export type TaskState = {
-  isCreateTaskModalVisible: boolean;
-  isTaskDetailsModalVisible: boolean;
+type CreateTaskModalState = {
+  isModalVisible: boolean;
   defaultLabel: string;
+};
+
+export type TaskState = {
+  createTaskModalState: CreateTaskModalState;
   selectedTask: Task;
 };
 
 const initialState: TaskState = {
-  isCreateTaskModalVisible: false,
-  isTaskDetailsModalVisible: false,
-  defaultLabel: '',
+  createTaskModalState: {
+    isModalVisible: false,
+    defaultLabel: '',
+  },
   selectedTask: {} as Task,
 };
 
@@ -21,20 +25,19 @@ export const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    setIsCreateTaskModalVisible: (state, action: PayloadAction<boolean>) => {
-      state.isCreateTaskModalVisible = action.payload;
+    setCreateTaskModalState: (
+      state,
+      action: PayloadAction<CreateTaskModalState>
+    ) => {
+      state.createTaskModalState = action.payload;
     },
     setSelectedTask: (state, action: PayloadAction<Task>) => {
       state.selectedTask = action.payload;
     },
-    setDefaultLabel: (state, action: PayloadAction<string>) => {
-      state.defaultLabel = action.payload;
-    },
   },
 });
 
-export const { setIsCreateTaskModalVisible, setSelectedTask, setDefaultLabel } =
-  taskSlice.actions;
+export const { setCreateTaskModalState, setSelectedTask } = taskSlice.actions;
 
 const taskReducer = taskSlice.reducer;
 
