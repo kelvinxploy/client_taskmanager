@@ -34,7 +34,8 @@
     "**/*.ts",
     "**/*.tsx",
     "types.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/components/home/TaskDetails"
   ],
   "exclude": ["node_modules"]
 }

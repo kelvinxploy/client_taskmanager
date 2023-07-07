@@ -1,44 +1,61 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ReactElement } from 'react';
 
-import { getTasks } from '../adapters/task';
+import { createTask, getTasks } from '../adapters/task';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import {
-  setDefaultLabel,
-  setIsCreateTaskModalVisible,
-} from '../redux/slices/taskSlice';
+import { setCreateTaskModalState } from '../redux/slices/taskSlice';
 import { Task } from '../types/task';
 
+import Modal from '@/components/common/Modal';
 import Navbar from '@/components/common/Navbar';
-import CreateTaskModal from '@/components/home/CreateTaskModal';
+import CreateTaskForm from '@/components/home/CreateTaskForm';
 import TasksContainer from '@/components/home/TasksContainer';
 
 export default function Home(): ReactElement {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { status, error, data } = useQuery({
+  const { isModalVisible, defaultLabel } = useAppSelector(
+    (selector) => selector.task.createTaskModalState
+  );
+  const dispatch = useAppDispatch();
+  const queryCliennt = useQueryClient();
+  const { data: tasksResponse } = useQuery({
     queryKey: ['tasks'],
     keepPreviousData: true,
     queryFn: getTasks,
   });
-  const tasks = (data?.data || []) as Task[];
-
-  const { isCreateTaskModalVisible } = useAppSelector(
-    (selector) => selector.task
-  );
-  const dispatch = useAppDispatch();
 
   const handleCreateTaskModalVisibility = (): void => {
-    dispatch(setIsCreateTaskModalVisible(!isCreateTaskModalVisible));
-    isCreateTaskModalVisible && dispatch(setDefaultLabel(''));
+    dispatch(
+      setCreateTaskModalState({
+        defaultLabel: '',
+        isModalVisible: !isModalVisible,
+      })
+    );
   };
+
+  const { status: createTaskStatus, mutate } = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      queryCliennt.prefetchQuery({ queryKey: ['tasks'] }); // TODO: USE SETQUERYDATA invalidateQueries
+      handleCreateTaskModalVisibility();
+    },
+  });
+  const tasks = (tasksResponse?.data || []) as Task[];
 
   return (
     <main>
       <Navbar onCreateTaskClick={handleCreateTaskModalVisibility} />
 
-      <CreateTaskModal
-        visible={isCreateTaskModalVisible}
+      <Modal
+        visible={isModalVisible}
         onClose={handleCreateTaskModalVisibility}
+        className="relative transform rounded-lg bg-white text-left shadow-xl transition-all w-full sm:max-w-lg"
+        content={
+          <CreateTaskForm
+            onSubmit={mutate}
+            loading={createTaskStatus === 'loading'}
+            defaultLabel={defaultLabel}
+          />
+        }
       />
 
       <TasksContainer tasks={tasks} />

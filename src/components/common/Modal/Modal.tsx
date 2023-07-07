@@ -1,33 +1,19 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment } from 'react';
 
-import CreateTaskForm from '../CreateTaskForm';
-
-import { createTask } from '@/src/adapters/task';
-import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
-import { setIsCreateTaskModalVisible } from '@/src/redux/slices/taskSlice';
-
-type CreateTaskModalProps = {
+type ModalProps = {
   visible: boolean;
   onClose: () => void;
+  content: React.ReactElement;
+  className?: string;
 };
 
-const CreateTaskModal = ({
+const Modal = ({
   visible,
+  content,
+  className = 'relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6',
   onClose,
-}: CreateTaskModalProps): React.ReactElement => {
-  const { defaultLabel } = useAppSelector((selector) => selector.task);
-  const queryCliennt = useQueryClient();
-  const dispatch = useAppDispatch();
-  const { status, mutate } = useMutation({
-    mutationFn: createTask,
-    onSuccess: () => {
-      queryCliennt.prefetchQuery({ queryKey: ['tasks'] });
-      dispatch(setIsCreateTaskModalVisible(false));
-    },
-  });
-
+}: ModalProps): React.ReactElement => {
   return (
     <Transition.Root show={visible} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -54,13 +40,7 @@ const CreateTaskModal = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all w-full sm:max-w-lg">
-                <CreateTaskForm
-                  onSubmit={mutate}
-                  loading={status === 'loading'}
-                  defaultLabel={defaultLabel}
-                />
-              </Dialog.Panel>
+              <Dialog.Panel className={className}>{content}</Dialog.Panel>
             </Transition.Child>
           </div>
         </div>
@@ -68,4 +48,4 @@ const CreateTaskModal = ({
     </Transition.Root>
   );
 };
-export default CreateTaskModal;
+export default Modal;
