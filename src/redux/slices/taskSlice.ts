@@ -6,12 +6,14 @@ import { Task } from '@/src/types/task';
 export type TaskState = {
   isCreateTaskModalVisible: boolean;
   isTaskDetailsModalVisible: boolean;
+  defaultLabel: string;
   selectedTask: Task;
 };
 
 const initialState: TaskState = {
   isCreateTaskModalVisible: false,
   isTaskDetailsModalVisible: false,
+  defaultLabel: '',
   selectedTask: {} as Task,
 };
 
@@ -25,10 +27,13 @@ export const taskSlice = createSlice({
     setSelectedTask: (state, action: PayloadAction<Task>) => {
       state.selectedTask = action.payload;
     },
+    setDefaultLabel: (state, action: PayloadAction<string>) => {
+      state.defaultLabel = action.payload;
+    },
   },
 });
 
-export const { setIsCreateTaskModalVisible, setSelectedTask } =
+export const { setIsCreateTaskModalVisible, setSelectedTask, setDefaultLabel } =
   taskSlice.actions;
 
 const taskReducer = taskSlice.reducer;

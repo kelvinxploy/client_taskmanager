@@ -3,7 +3,10 @@ import { ReactElement } from 'react';
 
 import { getTasks } from '../adapters/task';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { setIsCreateTaskModalVisible } from '../redux/slices/taskSlice';
+import {
+  setDefaultLabel,
+  setIsCreateTaskModalVisible,
+} from '../redux/slices/taskSlice';
 import { Task } from '../types/task';
 
 import Navbar from '@/components/common/Navbar';
@@ -26,6 +29,7 @@ export default function Home(): ReactElement {
 
   const handleCreateTaskModalVisibility = (): void => {
     dispatch(setIsCreateTaskModalVisible(!isCreateTaskModalVisible));
+    isCreateTaskModalVisible && dispatch(setDefaultLabel(''));
   };
 
   return (

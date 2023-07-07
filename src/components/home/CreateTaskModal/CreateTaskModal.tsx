@@ -5,7 +5,7 @@ import React, { Fragment } from 'react';
 import CreateTaskForm from '../CreateTaskForm';
 
 import { createTask } from '@/src/adapters/task';
-import { useAppDispatch } from '@/src/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
 import { setIsCreateTaskModalVisible } from '@/src/redux/slices/taskSlice';
 
 type CreateTaskModalProps = {
@@ -17,6 +17,7 @@ const CreateTaskModal = ({
   visible,
   onClose,
 }: CreateTaskModalProps): React.ReactElement => {
+  const { defaultLabel } = useAppSelector((selector) => selector.task);
   const queryCliennt = useQueryClient();
   const dispatch = useAppDispatch();
   const { status, mutate } = useMutation({
@@ -57,6 +58,7 @@ const CreateTaskModal = ({
                 <CreateTaskForm
                   onSubmit={mutate}
                   loading={status === 'loading'}
+                  defaultLabel={defaultLabel}
                 />
               </Dialog.Panel>
             </Transition.Child>
