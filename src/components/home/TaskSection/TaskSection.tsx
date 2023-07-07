@@ -3,6 +3,7 @@ import React from 'react';
 
 import TaskCard from '../TaskCard';
 
+import { assigneesByValue } from '@/src/constants';
 import { Task } from '@/src/types/task';
 
 type TaskSectionProps = {
@@ -30,6 +31,7 @@ const TaskSection = ({
             key={task.id}
             onClick={(): void => handleOpenDetailsModal(task)}
             title={task.title}
+            assigneeName={assigneesByValue[task.assignee]}
           />
         ))}
       </ul>
