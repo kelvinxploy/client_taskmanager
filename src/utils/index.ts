@@ -6,9 +6,11 @@ export const classNames = (...classes: string[]): string => {
 
 export const getWordsFirstLetterUppercase = (text: string): string => {
   return text
-    .split(' ')
-    .map((word) => word[0].toUpperCase())
-    .join('');
+    ? text
+        .split(' ')
+        .map((word) => word[0].toUpperCase())
+        .join('')
+    : '';
 };
 
 export const formatTasksByLabel = (tasks: Task[]): Record<string, Task[]> => {

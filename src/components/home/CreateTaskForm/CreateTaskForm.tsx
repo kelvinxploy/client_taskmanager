@@ -14,18 +14,25 @@ type CreateTaskFormProps = {
   onSubmit: (props: CreateTaskProps) => void;
   loading: boolean;
   defaultLabel: string;
+  defaultAssignee: string;
 };
 
 const CreateTaskForm = ({
   onSubmit,
   loading,
   defaultLabel,
+  defaultAssignee,
 }: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
   const labelled = useRef(defaultLabel);
+  const assigned = useRef(defaultAssignee);
 
   const submitHandler = (props: Task): void => {
-    onSubmit({ ...props, label: labelled.current || 'task' });
+    onSubmit({
+      ...props,
+      label: labelled.current || 'task',
+      assignee: assigned.current,
+    });
   };
 
   return (
@@ -69,6 +76,10 @@ const CreateTaskForm = ({
           <AssignActions
             defaultLabel={labelled.current}
             onLabelChange={(label): string => (labelled.current = label)}
+            defaultAssigned={assigned.current}
+            onAssignedChange={(assignee): string =>
+              (assigned.current = assignee)
+            }
             align="right"
           />
         </div>

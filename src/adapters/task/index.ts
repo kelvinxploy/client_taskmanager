@@ -12,6 +12,7 @@ export type CreateTaskProps = {
   title: string;
   note?: string;
   label: string;
+  assignee: string;
   contact_number: string;
   contact_name: string;
   task_type: string;

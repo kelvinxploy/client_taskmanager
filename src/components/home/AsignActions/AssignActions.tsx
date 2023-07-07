@@ -3,21 +3,13 @@ import { TagIcon, UserCircleIcon } from '@heroicons/react/20/solid';
 import React, { Fragment, useState } from 'react';
 
 import UserAvatar from '@/components/common/UserAvatar';
-import { labelsNameByValue, taskLabels } from '@/src/constants';
+import {
+  assigneesByValue,
+  employees,
+  labelsNameByValue,
+  taskLabels,
+} from '@/src/constants';
 import { classNames } from '@/src/utils';
-
-export const assignees = [
-  { name: 'Unassigned', value: null },
-  {
-    name: 'Kelvin Lora',
-    value: 'kl',
-  },
-];
-
-const assigneesByValue = {
-  '': '',
-  kl: 'Kelvin Lora',
-} as Record<string, string>;
 
 type AssignActionsProps = {
   align?: 'right' | 'left';
@@ -115,7 +107,7 @@ const AssignActions = ({
                     aria-hidden="true"
                   />
                 ) : (
-                  <UserAvatar name={assigned} />
+                  <UserAvatar name={assigneesByValue[assigned]} />
                 )}
 
                 <span
@@ -136,7 +128,7 @@ const AssignActions = ({
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute right-0 z-10 mt-1 max-h-56 w-52 overflow-auto rounded-lg bg-white py-3 text-base shadow ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {assignees.map((assignee) => (
+                  {employees.map((assignee) => (
                     <Listbox.Option
                       key={assignee.value}
                       className={({ active }): string =>
