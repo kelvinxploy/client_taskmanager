@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import AssignActions from '../AsignActions';
@@ -22,10 +22,10 @@ const CreateTaskForm = ({
   defaultLabel,
 }: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
-  const [labelled, setLabelled] = useState(defaultLabel);
+  const labelled = useRef(defaultLabel);
 
   const submitHandler = (props: Task): void => {
-    onSubmit({ ...props, label: labelled || 'task' });
+    onSubmit({ ...props, label: labelled.current || 'task' });
   };
 
   return (
@@ -67,8 +67,8 @@ const CreateTaskForm = ({
 
         <div className="absolute inset-x-px bottom-0">
           <AssignActions
-            defaultLabel={labelled}
-            onLabelChange={setLabelled}
+            defaultLabel={labelled.current}
+            onLabelChange={(label): string => (labelled.current = label)}
             align="right"
           />
         </div>
