@@ -13,14 +13,16 @@ import { Task } from '@/src/types/task';
 type CreateTaskFormProps = {
   onSubmit: (props: CreateTaskProps) => void;
   loading: boolean;
+  defaultLabel: string;
 };
 
 const CreateTaskForm = ({
   onSubmit,
   loading,
+  defaultLabel,
 }: CreateTaskFormProps): React.ReactElement => {
   const { register, handleSubmit } = useForm<Task>();
-  const [labelled, setLabelled] = useState('');
+  const [labelled, setLabelled] = useState(defaultLabel);
 
   const submitHandler = (props: Task): void => {
     onSubmit({ ...props, label: labelled || 'task' });
@@ -64,7 +66,11 @@ const CreateTaskForm = ({
         </div>
 
         <div className="absolute inset-x-px bottom-0">
-          <AssignActions onLabelChange={setLabelled} align="right" />
+          <AssignActions
+            defaultLabel={labelled}
+            onLabelChange={setLabelled}
+            align="right"
+          />
         </div>
       </div>
 

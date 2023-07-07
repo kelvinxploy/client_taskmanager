@@ -34,6 +34,7 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
       {taskLabels.map((label) => (
         <TaskSection
           key={label.id}
+          id={label.id}
           name={label.name}
           tasks={tasksByLabelObject[label.id] || []}
         />

@@ -4,19 +4,33 @@ import React from 'react';
 import TaskCard from '../TaskCard';
 
 import { useAppDispatch } from '@/src/redux/hooks';
-import { setSelectedTask } from '@/src/redux/slices/taskSlice';
+import {
+  setDefaultLabel,
+  setIsCreateTaskModalVisible,
+  setSelectedTask,
+} from '@/src/redux/slices/taskSlice';
 import { Task } from '@/src/types/task';
 
 type TaskSectionProps = {
+  id: string;
   name: string;
   tasks: Task[];
 };
 
-const TaskSection = ({ name, tasks }: TaskSectionProps): React.ReactElement => {
+const TaskSection = ({
+  id,
+  name,
+  tasks,
+}: TaskSectionProps): React.ReactElement => {
   const dispatch = useAppDispatch();
 
   const handleOpenDetailsModal = (task: Task): void => {
     dispatch(setSelectedTask(task));
+  };
+
+  const handleOpenCreateTaskModal = (): void => {
+    dispatch(setDefaultLabel(id));
+    dispatch(setIsCreateTaskModalVisible(true));
   };
 
   return (
@@ -33,7 +47,10 @@ const TaskSection = ({ name, tasks }: TaskSectionProps): React.ReactElement => {
         ))}
       </ul>
 
-      <button className="mt-4 p-1 w-full flex items-center gap-1 rounded-md hover:bg-gray-200">
+      <button
+        onClick={handleOpenCreateTaskModal}
+        className="mt-4 p-1 w-full flex items-center gap-1 rounded-md hover:bg-gray-200"
+      >
         <PlusIcon className="h-4 w-4" />{' '}
         <p className="text-sm text-gray-500">Add a ticket</p>
       </button>
