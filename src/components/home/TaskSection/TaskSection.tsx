@@ -29,8 +29,10 @@ const TaskSection = ({
         {tasks.map((task) => (
           <TaskCard
             key={task.id}
+            taskNumber={task.task_number}
             onClick={(): void => handleOpenDetailsModal(task)}
             title={task.title}
+            type={task.task_type}
             assigneeName={assigneesByValue[task.assignee]}
           />
         ))}
