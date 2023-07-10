@@ -2,6 +2,8 @@ import '@/styles/globals.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { store } from '../redux/store';
 
@@ -14,6 +16,7 @@ export default function App({
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer />
         <Component {...pageProps} />
       </QueryClientProvider>
     </Provider>
