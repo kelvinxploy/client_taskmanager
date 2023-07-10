@@ -1,6 +1,7 @@
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import TaskDetails from '../TaskDetails';
 import TaskSection from '../TaskSection';
@@ -8,6 +9,7 @@ import TaskSection from '../TaskSection';
 import Modal from '@/components/common/Modal';
 import { updateTask } from '@/src/adapters/task';
 import { taskLabels } from '@/src/constants';
+import { errorMessages } from '@/src/constants/messages';
 import { useAppDispatch, useAppSelector } from '@/src/redux/hooks';
 import {
   setCreateTaskModalState,
@@ -18,20 +20,37 @@ import { formatTasksByLabel } from '@/src/utils';
 
 type TasksContainerProps = {
   tasks: Task[];
+  loading: boolean;
 };
 
-const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
+const TasksContainer = ({
+  tasks,
+  loading,
+}: TasksContainerProps): ReactElement => {
   const { selectedTask } = useAppSelector((selector) => selector.task);
   const dispatch = useAppDispatch();
   const queryCliennt = useQueryClient();
-  const { status: updateTaskStatus, mutate } = useMutation({
+  const {
+    error: updateTaskError,
+    status: updateTaskStatus,
+    mutate,
+  } = useMutation({
     mutationFn: updateTask,
-    onSuccess: () => {
+    onSuccess: (updatedTask) => {
       queryCliennt.prefetchQuery({ queryKey: ['tasks'] }); // TODO: INVESTIGATE ANOTHER METHOD
+      dispatch(setSelectedTask(updatedTask.data));
     },
   });
   const isModalVisible = !!selectedTask?.id;
   const tasksByLabelObject = formatTasksByLabel(tasks);
+
+  useEffect(() => {
+    if (updateTaskError) {
+      toast.error(errorMessages.updateTask, {
+        autoClose: false,
+      });
+    }
+  }, [updateTaskError]);
 
   const handleOnLabelChange = (label: string): void => {
     mutate({ taskId: selectedTask.id, data: { label } });
@@ -56,7 +75,11 @@ const TasksContainer = ({ tasks }: TasksContainerProps): ReactElement => {
   };
 
   return (
-    <article className="p-4 flex w-screen gap-4 overflow-x-auto">
+    <article
+      className={`p-4 flex w-screen gap-4 overflow-x-auto ${
+        loading && 'pointer-events-none opacity-50'
+      }`}
+    >
       <Modal
         onClose={handleOnCloseDetailsModal}
         visible={isModalVisible}

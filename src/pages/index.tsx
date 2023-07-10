@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import { createTask, getTasks } from '../adapters/task';
+import { errorMessages } from '../constants/messages';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setCreateTaskModalState } from '../redux/slices/taskSlice';
 import { Task } from '../types/task';
@@ -17,7 +19,11 @@ export default function Home(): ReactElement {
   );
   const dispatch = useAppDispatch();
   const queryCliennt = useQueryClient();
-  const { data: tasksResponse } = useQuery({
+  const {
+    error,
+    status,
+    data: tasksResponse,
+  } = useQuery({
     queryKey: ['tasks'],
     keepPreviousData: true,
     queryFn: getTasks,
@@ -31,7 +37,11 @@ export default function Home(): ReactElement {
     );
   };
 
-  const { status: createTaskStatus, mutate } = useMutation({
+  const {
+    error: createTaskError,
+    status: createTaskStatus,
+    mutate,
+  } = useMutation({
     mutationFn: createTask,
     onSuccess: () => {
       queryCliennt.prefetchQuery({ queryKey: ['tasks'] }); // TODO: USE SETQUERYDATA invalidateQueries
@@ -39,6 +49,17 @@ export default function Home(): ReactElement {
     },
   });
   const tasks = (tasksResponse?.data || []) as Task[];
+
+  useEffect(() => {
+    if (error || createTaskError) {
+      const errorMessage = error
+        ? errorMessages.fetchingTask
+        : errorMessages.createTask;
+      toast.error(errorMessage, {
+        autoClose: false,
+      });
+    }
+  }, [error, createTaskError]);
 
   return (
     <main>
@@ -58,7 +79,7 @@ export default function Home(): ReactElement {
         }
       />
 
-      <TasksContainer tasks={tasks} />
+      <TasksContainer tasks={tasks} loading={status === 'loading'} />
     </main>
   );
 }

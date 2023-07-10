@@ -1,6 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { TagIcon, UserCircleIcon } from '@heroicons/react/20/solid';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 
 import UserAvatar from '@/components/common/UserAvatar';
 import {
@@ -13,20 +13,18 @@ import { classNames } from '@/src/utils';
 
 type AssignActionsProps = {
   align?: 'right' | 'left';
-  onAssignedChange?: (option: string) => void;
-  onLabelChange: (option: string) => void;
-  defaultLabel?: string;
-  defaultAssigned?: string;
+  setAssignee?: (option: string) => void;
+  setLabel: (option: string) => void;
+  label?: string;
+  assignee?: string;
 };
 const AssignActions = ({
   align = 'left',
-  defaultAssigned = '',
-  defaultLabel = '',
-  onLabelChange,
-  onAssignedChange,
+  assignee = '',
+  label = '',
+  setLabel,
+  setAssignee,
 }: AssignActionsProps): React.ReactElement => {
-  const [assigned, setAssigned] = useState(defaultAssigned);
-  const [labelled, setLabelled] = useState(defaultLabel);
   const justifyClassName =
     align === 'left' ? 'justify-start' : 'justify-end px-2';
 
@@ -34,11 +32,8 @@ const AssignActions = ({
     <div className={`flex flex-nowrap ${justifyClassName} space-x-2 py-2`}>
       <Listbox
         as="div"
-        value={labelled}
-        onChange={(label): void => {
-          setLabelled(label);
-          onLabelChange(label);
-        }}
+        value={label}
+        onChange={setLabel}
         className="flex-shrink-0"
       >
         {({ open }): React.ReactElement => (
@@ -51,7 +46,7 @@ const AssignActions = ({
                   aria-hidden="true"
                 />
                 <span className="text-gray-900 block truncate sm:ml-2">
-                  {!labelled ? 'Label' : labelsNameByValue[labelled]}
+                  {!label ? 'Label' : labelsNameByValue[label]}
                 </span>
               </Listbox.Button>
 
@@ -89,11 +84,8 @@ const AssignActions = ({
       </Listbox>
       <Listbox
         as="div"
-        value={assigned}
-        onChange={(assignee): void => {
-          setAssigned(assignee);
-          onAssignedChange && onAssignedChange(assignee);
-        }}
+        value={assignee}
+        onChange={setAssignee}
         className="flex-shrink-0"
       >
         {({ open }): React.ReactElement => (
@@ -101,22 +93,22 @@ const AssignActions = ({
             <Listbox.Label className="sr-only">Assign</Listbox.Label>
             <div className="relative">
               <Listbox.Button className="relative inline-flex items-center whitespace-nowrap rounded-full bg-gray-50 px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 sm:px-3">
-                {!assigned ? (
+                {!assignee ? (
                   <UserCircleIcon
                     className="h-5 w-5 flex-shrink-0 text-gray-300 sm:-ml-1"
                     aria-hidden="true"
                   />
                 ) : (
-                  <UserAvatar name={assigneesByValue[assigned]} />
+                  <UserAvatar name={assigneesByValue[assignee]} />
                 )}
 
                 <span
                   className={classNames(
-                    !assigned ? '' : 'text-gray-900',
+                    !assignee ? '' : 'text-gray-900',
                     'block truncate sm:ml-2'
                   )}
                 >
-                  {!assigned ? 'Assign' : assigneesByValue[assigned]}
+                  {!assignee ? 'Assign' : assigneesByValue[assignee]}
                 </span>
               </Listbox.Button>
 

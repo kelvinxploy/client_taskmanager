@@ -29,10 +29,10 @@ const TaskDetails = ({
           {task.title}
         </h2>
         <AssignActions
-          defaultLabel={task.label}
-          onLabelChange={onLabelChange}
-          defaultAssigned={task.assignee}
-          onAssignedChange={onAssignedChange}
+          label={task.label}
+          setLabel={onLabelChange}
+          assignee={task.assignee}
+          setAssignee={onAssignedChange}
           align="right"
         />
       </div>
