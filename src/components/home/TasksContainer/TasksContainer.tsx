@@ -74,9 +74,15 @@ const TasksContainer = ({
     );
   };
 
+  useEffect(() => {
+    return () => {
+      handleOnCloseDetailsModal();
+    };
+  }, []);
+
   return (
     <article
-      className={`p-4 flex w-screen gap-4 overflow-x-auto ${
+      className={`p-4 flex w-screen gap-4 overflow-x-auto h-[90vh] ${
         loading && 'pointer-events-none opacity-50'
       }`}
     >

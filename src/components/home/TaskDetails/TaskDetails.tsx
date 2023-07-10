@@ -1,13 +1,16 @@
+import Link from 'next/link';
 import React from 'react';
 
 import AssignActions from '../AsignActions';
 
+import Button from '@/components/form/Button';
 import { Task } from '@/src/types/task';
 
 type TaskDetailsProps = {
   task: Task;
-  onLabelChange: (newLabel: string) => void;
-  onAssignedChange: (assignee: string) => void;
+  isPage?: boolean;
+  onLabelChange?: (newLabel: string) => void;
+  onAssignedChange?: (assignee: string) => void;
 };
 
 const fields = [
@@ -19,6 +22,7 @@ const fields = [
 
 const TaskDetails = ({
   task,
+  isPage,
   onLabelChange,
   onAssignedChange,
 }: TaskDetailsProps): React.ReactElement => {
@@ -59,6 +63,13 @@ const TaskDetails = ({
               {task.note}
             </dd>
           </div>
+          {!isPage && (
+            <div className="border-t border-gray-300 px-4 pt-4 col-span-2 sm:px-0">
+              <Link href={`/jobs/${task.id}`}>
+                <Button>See more...</Button>
+              </Link>
+            </div>
+          )}
         </dl>
       </div>
     </section>

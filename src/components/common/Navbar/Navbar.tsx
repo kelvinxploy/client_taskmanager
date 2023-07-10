@@ -1,25 +1,30 @@
 import { MagnifyingGlassIcon, PlusCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 import Button from '@/components/form/Button';
 
 type NavbarProps = {
-  onCreateTaskClick: () => void;
+  onCreateTaskClick?: () => void;
+  isDetailsPage?: boolean;
 };
 
-const Navbar = ({ onCreateTaskClick }: NavbarProps): React.ReactElement => {
+const Navbar = ({
+  isDetailsPage,
+  onCreateTaskClick,
+}: NavbarProps): React.ReactElement => {
   return (
     <nav className="bg-white shadow-sm mx-auto max-w-7xl p-4 px-4 sm:px-6 lg:px-8">
       <div className="relative flex items-center justify-between gap-8">
-        <a className="relative block h-8 w-8">
+        <Link href="/" className="relative block h-8 w-8">
           <Image
             className=""
             src="https://tailwindui.com/img/logos/mark.svg"
             alt="Your Company"
             layout="fill"
           />
-        </a>
+        </Link>
 
         <div className="flex justify-center flex-1 md:px-8 lg:px-0">
           <div className="md:w-[640px]">
@@ -45,7 +50,10 @@ const Navbar = ({ onCreateTaskClick }: NavbarProps): React.ReactElement => {
         </div>
 
         <div className=" lg:flex lg:items-center lg:justify-end">
-          <Button onClick={onCreateTaskClick} className="flex gap-1">
+          <Button
+            onClick={!isDetailsPage ? onCreateTaskClick : undefined}
+            className="flex gap-1"
+          >
             <PlusCircleIcon className="h-6 w-6" />
             Add task
           </Button>

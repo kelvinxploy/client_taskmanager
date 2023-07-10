@@ -8,6 +8,12 @@ export const getTasks = async (): Promise<AxiosResponse<Task[]>> => {
   return await getRequest<Task[]>(`${WEB_API_URL}/task/`);
 };
 
+export const getTaskById = async (
+  taskId: number
+): Promise<AxiosResponse<Task>> => {
+  return await getRequest<Task>(`${WEB_API_URL}/task/${taskId}/`);
+};
+
 export type CreateTaskProps = {
   title: string;
   note?: string;
