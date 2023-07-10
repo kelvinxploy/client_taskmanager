@@ -14,7 +14,7 @@ import { classNames } from '@/src/utils';
 type AssignActionsProps = {
   align?: 'right' | 'left';
   setAssignee?: (option: string) => void;
-  setLabel: (option: string) => void;
+  setLabel?: (option: string) => void;
   label?: string;
   assignee?: string;
 };
